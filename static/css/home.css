@@ -1,0 +1,7 @@
+a.active {
+    background-color: #212121;
+    color: white;
+}
+::-webkit-scrollbar {
+    display: none;
+}

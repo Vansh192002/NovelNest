@@ -1,0 +1,86 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <script src="{% static 'js/register.js' %}" defer></script>
+
+    <title>{% block title %}NovelNest{% endblock %}</title>
+</head>
+<body>
+
+<div class="flex h-screen bg-indigo-950">
+    <div class="w-full max-w-4xl m-auto bg-zinc-100 rounded p-5">
+        <header>
+            <img class="w-20 mx-auto mb-5" src="{% static 'images/logo.ico' %}" />
+        </header>
+        <form method="POST" id="registrationForm" onsubmit="return validateForm()">
+            {% csrf_token %}
+            
+            <!-- Grid Layout for Fields -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- Username Field -->
+                <div>
+                    <label class="block mb-2 text-stone-900 font-semibold" for="username">Username</label>
+                    <input type="text" name="username" id="username" class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-500" required />
+                </div>
+                
+                <!-- First Name Field -->
+                <div>
+                    <label class="block mb-2 text-stone-900 font-semibold" for="firstname">First Name</label>
+                    <input type="text" name="firstname" id="firstname" class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-500" required />
+                </div>
+                
+                <!-- Last Name Field -->
+                <div>
+                    <label class="block mb-2 text-stone-900 font-semibold" for="lastname">Last Name</label>
+                    <input type="text" name="lastname" id="lastname" class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-500" required />
+                </div>
+
+                <!-- Email Field -->
+                <div>
+                    <label class="block mb-2 text-stone-900 font-semibold" for="email">Email</label>
+                    <input type="email" name="email" id="email" class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-500" required />
+                </div>
+
+                <!-- Password Field -->
+                <div>
+                    <label class="block mb-2 text-stone-900 font-semibold" for="password">Password</label>
+                    <input type="password" name="password" id="password" class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-500" required />
+                    <small class="text-gray-600">Password must be at least 8 characters, include at least one uppercase letter, one lowercase letter, and one number, and contain no spaces.</small>
+                </div>
+
+                <!-- Confirm Password Field -->
+                <div>
+                    <label class="block mb-2 text-stone-900 font-semibold" for="confirm_password">Confirm Password</label>
+                    <input type="password" name="confirm_password" id="confirm_password" class="w-full px-4 py-2 border border-zinc-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition duration-300 ease-in-out text-gray-800 placeholder-gray-500" required />
+                </div>
+            </div>
+            
+            <!-- Error Message -->
+            <div id="errorMessage" class="text-red-500 text-md mt-2 hidden">
+                <p>Passwords do not match or do not meet the requirements.</p>
+            </div>
+            
+            <div class="mt-6 ml-85 justify-center">
+                <input class="w-40 h-10 bg-indigo-700 hover:bg-pink-700 text-white font-bold justify-center px-2 py-2 pl- mb-6 rounded transition duration-300 ease-in-out hover:scale-105" type="submit" value="Register">
+            </div>
+        </form>
+
+        <footer class="mt-4">
+            <a class="text-indigo-700 hover:text-pink-700 text-sm float-left" href="#">Forgot Password?</a>
+            <a class="text-indigo-700 hover:text-pink-700 text-sm float-right" href="{% url 'login' %}">Existing User? Login!</a>
+        </footer>
+    </div>
+</div>
+
+
+</body>
+</html>

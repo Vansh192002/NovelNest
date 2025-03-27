@@ -1,0 +1,120 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" style="background-color: #0d061f; color: #ffffff;">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="icon" type="image/x-icon" href="{% static 'images/logo.ico' %}">
+  <link rel="stylesheet" href="{% static 'css/home.css' %}">
+  <title>{% block title %}NovelNest{% endblock %}</title>
+
+  <style>
+    /* Apply gradient background to the sidebar */
+    *{
+      font-family: "system-ui";
+    }
+
+    .sidebar {
+      background: linear-gradient(to right, #0d061f, rgba(13, 6, 31, 0));
+      /* Dark to transparent gradient */
+      transition: width 0.3s ease-in-out;
+      color: #ffffff;
+    }
+
+    .sidebar:hover {
+      width: 160px;
+      /* Sidebar expands on hover */
+    }
+
+    /* Style for the sidebar content */
+    .sidebar .group:hover {
+      background-color: rgba(0, 0, 0, 0.3);
+      width: 100%;
+      /* Slight background change on hover */
+    }
+  </style>
+</head>
+
+<body class="h-screen bg-transparent overflow-x-hidden">
+
+  <div class="flex-wrap gap-2">
+    <div
+      class="pr-2 sidebar fixed top-0 flex flex-col items-center absolute w-16 h-full overflow-hidden text-gray-400 bg-gray-900 rounded group transition-all duration-300 ease-in-out z-10">
+      <!-- Sidebar Icon and Text Section -->
+      <a class="flex items-center justify-center mt-3 p-2 w-full">
+        <svg class="w-8 h-8 fill-current group-hover:text-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"
+          fill="currentColor">
+          <path
+            d="M11 17a1 1 0 001.447.894l4-2A1 1 0 0017 15V9.236a1 1 0 00-1.447-.894l-4 2a1 1 0 00-.553.894V17zM15.211 6.276a1 1 0 000-1.788l-4.764-2.382a1 1 0 00-.894 0L4.789 4.488a1 1 0 000 1.788l4.764 2.382a1 1 0 00.894 0l4.764-2.382zM4.447 8.342A1 1 0 003 9.236V15a1 1 0 00.553.894l4 2A1 1 0 009 17v-5.764a1 1 0 00-.553-.894l-4-2z" />
+        </svg>
+        <span class="ml-2 text-sm font-bold group-hover:block hidden">NovelNest</span>
+      </a>
+
+      <!-- Sidebar Links -->
+      <div class="flex flex-col items-center mt-3 border-t border-gray-700 w-full">
+        <a class="flex items-center justify-center w-12 h-12 mt-2 rounded group hover:text-gray-300" id="Home">
+          <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          <span class="ml-2 text-sm font-medium group-hover:block  hidden">Home</span>
+        </a>
+
+        <a class="flex items-center justify-center w-12 h-12 mt-2 rounded group hover:text-gray-300" id="Search">
+          <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+          </svg>
+          <span class="ml-2 text-sm font-medium group-hover:block hidden">Search</span>
+        </a>
+
+        <a class="flex items-center justify-center w-12 h-12 mt-2 rounded group hover:text-gray-300" id="Genres">
+          <svg class="w-6 h-6 stroke-current group-hover:text-white" xmlns="http://www.w3.org/2000/svg" fill="none"
+            viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6H20M4 12H20M4 18H20" />
+          </svg>
+          <span class="ml-2 text-sm font-medium group-hover:block hidden">Genres</span>
+        </a>
+
+        <a class="flex items-center justify-center w-12 h-12 mt-2 rounded group hover:text-gray-300" id="Collection">
+          <svg class="w-6 h-6 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M5 3h14a2 2 0 012 2v14l-7-5-7 5V5a2 2 0 012-2z" />
+          </svg>
+          <span class="ml-2 text-sm font-medium group-hover:block hidden">Collection</span>
+        </a>
+
+        <a class="flex items-center justify-center w-12 h-12 mt-2 rounded group hover:text-gray-300" id="Logout"
+          href="{% url 'logout' %}">
+
+          <svg class="w-6 h-6 group-hover:hidden pl-1" xmlns="http://www.w3.org/2000/svg" height="12" width="12"
+            viewBox="0 0 512 512">
+            <path fill="#ffffff"
+              d="M377.9 105.9L500.7 228.7c7.2 7.2 11.3 17.1 11.3 27.3s-4.1 20.1-11.3 27.3L377.9 406.1c-6.4 6.4-15 9.9-24 9.9c-18.7 0-33.9-15.2-33.9-33.9l0-62.1-128 0c-17.7 0-32-14.3-32-32l0-64c0-17.7 14.3-32 32-32l128 0 0-62.1c0-18.7 15.2-33.9 33.9-33.9c9 0 17.6 3.6 24 9.9zM160 96L96 96c-17.7 0-32 14.3-32 32l0 256c0 17.7 14.3 32 32 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32l-64 0c-53 0-96-43-96-96L0 128C0 75 43 32 96 32l64 0c17.7 0 32 14.3 32 32s-14.3 32-32 32z" />
+          </svg>
+          <span class="ml-2 text-sm font-medium group-hover:block hidden">Logout</span>
+        </a>
+
+
+
+      </div>
+    </div>
+
+    <div>
+      {% block content %}
+      {% endblock %}
+    </div>
+
+  </div>
+
+  <script src="{% static 'js/home.js' %}"></script>
+</body>
+
+</html>

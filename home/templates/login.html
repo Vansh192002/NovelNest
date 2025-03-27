@@ -1,0 +1,53 @@
+{% load static %}
+{% load widget_tweaks %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="{% static 'images/logo.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">  
+    <title>{% block title %}NovelNest{% endblock %}</title>
+</head>
+<body>
+
+<div class="flex h-screen bg-indigo-950">
+    <div class="w-full max-w-xs m-auto bg-zinc-100 rounded p-5">
+        <header>
+            <img class="w-20 mx-auto mb-5" src="{% static 'images/logo.ico' %}" />
+        </header>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <div>
+                <label class="block mb-2 text-stone-900 font-semibold" for="username">Username</label>
+                {% render_field form.username class="w-full p-2 mb-6 font-medium text-stone-950 border-b-2 border-indigo-500 outline-none focus:bg-gray-300" %}
+            </div>
+            
+            <div>
+                <label class="block mb-2 text-stone-900 font-semibold" for="password">Password</label>
+                {% render_field form.password class="w-full p-2 mb-6 font-medium text-stone-950 font-medium border-b-2 border-indigo-500 outline-none focus:bg-gray-300" %}
+
+            </div>
+            {% if error %}
+            <div class="text-red-500 text-md">
+                    <p>{{ error }}</p>
+            </div>
+            {% endif %}
+            <div>
+                <input class="w-full bg-indigo-700 hover:bg-pink-700 text-white font-bold py-2 px-4 mb-6 rounded" type="submit" value="Login">
+            </div>
+        </form>
+
+        <footer>
+            <a class="text-indigo-700 hover:text-pink-700 text-sm float-left" href="#">Forgot Password?</a>
+            <a class="text-indigo-700 hover:text-pink-700 text-sm float-right" href="{% url 'register' %}">Create Account</a>
+        </footer>
+    </div>
+</div>
+
+</body>
+</html>

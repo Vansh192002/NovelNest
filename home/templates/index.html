@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+
+{% block title %}NovelNest-Home{% endblock %}
+
+
+{% block content %}
+
+<span class="flex items-center justify-between pl-16 pt-5">
+    <h2 class="text-3xl font-semibold text-whitw tracking-tight leading-tight drop-shadow-md">Books</h2>
+
+    <a href="{% url 'books' %}"
+        class="text-white font-medium hover:translate-x-[-10px] transition-transform duration-300 ease-in-out pr-3">
+        Explore All Books >
+    </a>
+</span>
+
+<div class="p-1 flex  h-full overflow-x-auto items-center justify-start w-full">
+
+    {% for item in books_with_colors %}
+    <div class="flex-shrink-0 m-6 relative overflow-hidden bg-sky-{{ item.color }} rounded-lg max-w-3xs shadow-lg max-h-75 min-h-75"
+        id="genre-card">
+        <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none"
+            style="transform: scale(1.5); opacity: 0.1;">
+            <rect x="159.52" y="175" width="152" height="152" rx="8" transform="rotate(-45 159.52 175)" fill="white" />
+            <rect y="107.48" width="152" height="152" rx="8" transform="rotate(-45 0 107.48)" fill="white" />
+        </svg>
+        <div class="relative pt-10 px-10 flex items-center justify-center">
+            <div class="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3"
+                style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+            </div>
+            {% if item.book.pdf_file %}
+            <img class="relative w-35 h-35" src="{{ item.book.thumbnail.url }}" alt="{{ item.book.name }}">
+            {% else %}
+            <img class="relative w-35 h-35"
+                src="https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png"
+                alt="">
+            {% endif %}
+        </div>
+        <div class="relative text-white px-6 pb-6 mt-6">
+            <div class="flex justify-between">
+                <span class="block font-semibold text-xl">{{ item.book.name }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<span class="flex items-center justify-between pl-16 pt-5">
+    <h2 class="text-3xl font-semibold text-whitw tracking-tight leading-tight drop-shadow-md">Genres</h2>
+
+    <a href="{% url 'genres' %}"
+        class="text-white font-medium hover:translate-x-[-10px] transition-transform duration-300 ease-in-out pr-3">
+        Explore All Genres >
+    </a>
+</span>
+
+<div class="p-1 flex  h-full overflow-x-auto items-center justify-start w-full">
+    {% for item in genres_with_colors %}
+    <div class="flex-shrink-0 m-6 relative overflow-hidden bg-orange-{{ item.color }} rounded-lg max-w-3xs shadow-lg max-h-75 min-h-75"
+        id="genre-card">
+        <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none"
+            style="transform: scale(1.5); opacity: 0.1;">
+            <rect x="159.52" y="175" width="152" height="152" rx="8" transform="rotate(-45 159.52 175)" fill="white" />
+            <rect y="107.48" width="152" height="152" rx="8" transform="rotate(-45 0 107.48)" fill="white" />
+        </svg>
+        <div class="relative pt-10 px-10 flex items-center justify-center">
+            <div class="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3"
+                style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+            </div>
+            {% if item.genre.image %}
+            <img class="relative w-35 h-35" src="{{ item.genre.image.url }}" alt="{{ item.genre.name }}">
+            {% else %}
+            <img class="relative w-35 h-35"
+                src="https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png"
+                alt="">
+            {% endif %}
+        </div>
+        <div class="relative text-white px-6 pb-6 mt-6">
+            <div class="flex justify-between">
+                <span class="block font-semibold text-xl">{{ item.genre.name }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+
+<span class="flex items-center justify-between pl-16 pt-5">
+    <h2 class="text-3xl font-semibold text-whitw tracking-tight leading-tight drop-shadow-md">My List</h2>
+
+    <a href="#"
+        class="text-white font-medium hover:translate-x-[-10px] transition-transform duration-300 ease-in-out pr-3">
+        Explore All Genres >
+    </a>
+</span>
+
+<div class="p-1 flex  h-full overflow-x-auto items-center justify-start w-full">
+    {% for item in genres_with_colors %}
+    <div class="flex-shrink-0 m-6 relative overflow-hidden bg-green-{{ item.color }} rounded-lg max-w-3xs shadow-lg max-h-75 min-h-75"
+        id="genre-card">
+        <svg class="absolute bottom-0 left-0 mb-8" viewBox="0 0 375 283" fill="none"
+            style="transform: scale(1.5); opacity: 0.1;">
+            <rect x="159.52" y="175" width="152" height="152" rx="8" transform="rotate(-45 159.52 175)" fill="white" />
+            <rect y="107.48" width="152" height="152" rx="8" transform="rotate(-45 0 107.48)" fill="white" />
+        </svg>
+        <div class="relative pt-10 px-10 flex items-center justify-center">
+            <div class="block absolute w-48 h-48 bottom-0 left-0 -mb-24 ml-3"
+                style="background: radial-gradient(black, transparent 60%); transform: rotate3d(0, 0, 1, 20deg) scale3d(1, 0.6, 1); opacity: 0.2;">
+            </div>
+            {% if item.genre.image %}
+            <img class="relative w-35 h-35" src="{{ item.genre.image.url }}" alt="{{ item.genre.name }}">
+            {% else %}
+            <img class="relative w-35 h-35"
+                src="https://user-images.githubusercontent.com/2805249/64069899-8bdaa180-cc97-11e9-9b19-1a9e1a254c18.png"
+                alt="">
+            {% endif %}
+        </div>
+        <div class="relative text-white px-6 pb-6 mt-6">
+            <div class="flex justify-between">
+                <span class="block font-semibold text-xl">{{ item.genre.name }}</span>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+
+</div>
+{% endblock %}
