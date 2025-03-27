@@ -10,8 +10,8 @@ class Genre(models.Model):
 
 class Book(models.Model):
     name = models.CharField(max_length=100)
-    author = models.CharField(max_length=300)
-    summary = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+    summary = models.TextField()
     publication_year = models.DateField(max_length=100)
     genres = models.ManyToManyField(Genre, related_name='books')
     pdf_file = models.FileField(upload_to='ebooks/')

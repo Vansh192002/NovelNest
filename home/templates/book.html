@@ -7,58 +7,54 @@
 
 {% if block %}
 
-<!-- Main Container (Dark Theme) -->
 <div class="bg-[#0d061f] text-white">
 
-    <!-- Book Details Section -->
     <div class="container mx-auto px-4 py-8">
 
-        <!-- Book Details Section -->
         <div class="flex flex-col md:flex-row gap-8">
 
-            <!-- Left Section: Book Image and Details (Portrait, Adjusted Width 2/5) -->
             <div
                 class="w-full md:w-2/5 bg-gray-800 rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-xl p-6 fixed max-h-9/10  mb-2">
                 <div class="flex flex-col items-center text-center">
-                    <!-- Book Image (Portrait) -->
-                    <div class="relative w-full h-96 mb-6">
+                    <div class="relative w-full h-70 mb-6">
                         <img src="{{ book.thumbnail.url }}" alt="Book Cover"
                             class="absolute inset-0 w-full h-full object-contain rounded-lg"
                             style="pointer-events: none;">
                     </div>
+
                     <h2 class="text-3xl font-extrabold text-white mb-4">{{ book.name }}</h2>
                     <p class="text-lg font-light text-gray-400 mb-4">By {{ book.author }}</p>
-                    <!-- Book Audio Link (Example: Spotify or Apple Podcast) -->
-                    <a href="#" class="text-blue-400 hover:underline transition duration-300 mb-2 block">Listen on
-                        Spotify</a>
-                    <a href="#" class="text-blue-400 hover:underline transition duration-300">Listen on Apple
-                        Podcasts</a>
+                </div>
+                <div class="overflow-y-auto">
+                    <span>{{book.summary}}</span>
+                </div>
+                <div class="mt-5">
+                    <a href="#">Read Now ></a>
+                    <a href="#" class="ml-60">Download Ebook</a>
                 </div>
             </div>
 
-            <!-- Right Section: Book Suggestions (Scrollable Landscape Cards) -->
             <div class="ml-[40%] md:w-3/5 overflow-y-auto max-h-screen pr-4">
-                <!-- Book Suggestions Title & Cards -->
                 <div>
-                    <!-- Title Aligned with Cards -->
                     <h3 class="text-xl font-semibold text-white mb-4 ml-20">More Books You May Like</h3>
 
-                    <!-- Horizontal Book Suggestions List (Stretched Cards) -->
                     <div class="flex flex-col space-y-6">
 
-                        <!-- Book 1 (Landscape, Reduced Width) -->
-                       {% for suggestion in suggestions %}
+                        {% for suggestion in suggestions %}
                         <div
                             class="bg-gray-800 p-6 rounded-lg shadow-lg hover:scale-105 hover:shadow-xl transition-transform w-[80%] h-48 mx-auto">
-                            <div class="flex h-full">
-                                <img src="{{ suggestion.thumbnail.url }}" alt="Book Cover"
-                                    class="w-1/5 h-full object-cover rounded-md mr-6">
-                                <div class="flex flex-col justify-between w-2/3">
-                                    <p class="text-sm font-semibold text-white">{{suggestion.name}}</p>
-                                    <p class="text-xs text-gray-400">By {{ suggestion.author }}</p>
-                                    <p class="text-gray-300 text-sm">{{suggestion.summary}}</p>
+                            <a href="{% url 'get_book' suggestion.id  %}">
+                                <div class="flex h-full">
+                                    <img src="{{ suggestion.thumbnail.url }}" alt="Book Cover"
+                                        class="w-1/5 h-full object-cover rounded-md mr-6">
+                                    <div class="flex flex-col justify-between w-2/3">
+                                        <p class="text-sm font-semibold text-white">{{suggestion.name}}</p>
+                                        <p class="text-xs text-gray-400">By {{ suggestion.author }}</p>
+                                        <p class="text-gray-300 text-sm">{{suggestion.summary}}</p>
+                                    </div>
+
                                 </div>
-                            </div>
+                            </a>
                         </div>
                         {% endfor %}
                     </div>
@@ -67,7 +63,9 @@
         </div>
     </div>
 </div>
+<script>
 
+</script>
 {% endif %}
 
 {% endblock %}

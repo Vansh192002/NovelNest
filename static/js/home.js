@@ -1,7 +1,7 @@
 let allAtags = document.getElementsByTagName("a");
 
 const currentButtonCss = {
-    background: "#212121",
+    background: "transparent",
     width : "100%"
 };
 

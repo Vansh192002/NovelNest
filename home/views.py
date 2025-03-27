@@ -1,6 +1,6 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import *
-from django.http import JsonResponse,HttpResponse
+from django.http import JsonResponse,FileResponse
 from PyPDF2 import PdfReader
 from django.contrib.auth.models import User
 import os
@@ -71,11 +71,11 @@ def get_books(request):
     books = Book.objects.all()
     return render(request,'books_admin.html',{'books':books})
 
-@login_required
 def get_specific_book(request,book_id):
     
     book = Book.objects.filter(id=book_id).first()
-    suggestions = Book.objects.all()
+    suggestions = Book.objects.exclude(id=book_id)
+        
     return render(request,'book.html',{"book":book,'suggestions':suggestions})
 
 @login_required
@@ -110,6 +110,7 @@ def book_page(request, book_id=None, page_number=None):
             })
                         
     except Exception as e:
+        print(e)
         return JsonResponse({"error": str(e)}, status=500)
 
 def user_profile(request,username):

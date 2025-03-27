@@ -9,7 +9,7 @@
     <span class="justify-self-center font-serif m-7 mt-15 text-[40px]">Genres</span>
 </div>
 
-<div class="flex flex-wrap justify-start mt-5 ml-16">
+<div class="flex flex-wrap justify-start mt-5 ml-10">
     {% for genre in genres %}
     <div class="flex justify-center items-center m-3">
         <div
@@ -20,7 +20,7 @@
             </a>
             <div class="flex p-4 justify-between flex-grow">
                 <div class="flex items-center space-x-1">
-                    <h2 class="text-gray-800 font-bold cursor-pointer">{{genre.name}}</h2>
+                    <h2 class="text-gray-800 font-bold cursor-pointer">{{genre.get_name_display }}</h2>
                 </div>
             </div>
         </div>
