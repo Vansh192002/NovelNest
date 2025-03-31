@@ -130,7 +130,7 @@ def get_book_content(request, book_id):
         reader = PdfReader(f)
         return render(request,'read_book.html', {
             "page_length" : len(reader.pages),
-            "book_id" : book_id
+            "book" : book
         })
 
 def user_profile(request,username):

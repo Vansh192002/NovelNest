@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block content %}
-{% if book_id %}
+{% if book %}
 <div class="flex justify-center items-center min-h-screen transparent" id="loader">
     <div class="flex flex-col items-center space-y-4">
       <div class="text-3xl font-semibold text-blue-600 animate-pulse">Loading Your Book!</div>
@@ -15,7 +15,7 @@
 <div id="page-content" class="flex w-full justify-center hidden">
     <div class="pt-75">
         <button id="prev-btn"
-            data-book-id="{{ book_id }}"
+            data-book-id="{{ book.id }}"
             data-total-pages="{{ page_length }}"
             class="bg-blue-600 text-white px-4 py-2 h-20 w-15 hover:bg-blue-700 focus:outline-none">&lt;
         </button>
@@ -24,8 +24,8 @@
         <div class="flex border-x-4 border-indigo-500 border-indigo-500 h-146 width-full">
             <header class="bg-blue-800 text-white py-6 shadow-md">
                 <div class="container mx-auto text-center">
-                    <h1 class="text-4xl font-semibold" id="book-title">The Great Adventure</h1>
-                    <h3 class="text-xl mt-2" id="book-author">by John Doe</h3>
+                    <h1 class="text-4xl font-semibold" id="book-title">{{book.name}}</h1>
+                    <h3 class="text-xl mt-2" id="book-author">by {{book.author}}</h3>
                 </div>
             </header>
 
@@ -38,7 +38,7 @@
     </div>
     <div class="pt-75">
         <button id="next-btn"
-            class="bg-blue-600 text-white px-4 py-2 h-20 w-15 hover:bg-blue-700 focus:outline-none">&gt;
+            class="bg-blue-600 text-white px-4 py-2 h-20 w-15 hover:bg-blue-700 focus:outline-none ">&gt;
         </button>
     </div>
 </div>
