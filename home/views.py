@@ -1,9 +1,13 @@
 from django.shortcuts import render,get_object_or_404,redirect
 from .models import *
-from django.http import JsonResponse,FileResponse
+from django.core.cache import cache
+from django.http import JsonResponse,FileResponse,HttpResponse
 from PyPDF2 import PdfReader
 from django.contrib.auth.models import User
-import os
+import os, fitz
+from io import BytesIO
+from PIL import Image
+from NovelNest.settings import MEDIA_URL
 from django.contrib.auth import  login,logout
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -79,39 +83,55 @@ def get_specific_book(request,book_id):
     return render(request,'book.html',{"book":book,'suggestions':suggestions})
 
 @login_required
+def download_pdf(request,book_id):
+    book = Book.objects.filter(id=book_id).first()
+    file_path = book.pdf_file.path
+    if os.path.exists(file_path):
+        return FileResponse(open(file_path,'rb'), as_attachment=True, filename=f"{book.name}.pdf")
+
+@login_required
 def get_genres(request):
     genres = Genre.objects.all()
     return render(request,'genre.html',{'genres':genres})
 
-def book_page(request, book_id=None, page_number=None):
+def get_book_page(request, book_id=None, page_number=None):
+    
+    cache_key = f"book_{book_id}_page_{page_number}"
+    cached_img = cache.get(cache_key)
+    if cached_img:
+        return HttpResponse(cached_img, content_type='image/png')
+    
     try:
-        print( book_id, page_number)
-        book = get_object_or_404(Book,id=book_id)
+        book = get_object_or_404(Book, id=book_id)
         pdf_path = book.pdf_file.path
         
-        if not os.path.exists(pdf_path):
-            return JsonResponse({"error": "PDF file not found"}, status=404)
+        doc = fitz.open(pdf_path)
+        page = doc.load_page(page_number)
+        pix = page.get_pixmap()
+        img = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+
+        img_byte_arr = BytesIO()
+        img.save(img_byte_arr, format='PNG')
+        img_byte_arr.seek(0)
         
-        with open(pdf_path, 'rb') as f:
-            reader = PdfReader(f)
-            total_pages = len(reader.pages)
-            
-            if page_number < 0 or page_number >= total_pages:
-                return JsonResponse({"error":"Page number out of range"},status= 400)
-            
-            page = reader.pages[page_number]
-            page_content = page.extract_text()
-            
-            return JsonResponse({
-                "book_id": book.id,
-                "page_number": page_number,
-                "total_pages": total_pages,
-                "content": page_content
-            })
-                        
+        cache.set(cache_key, img_byte_arr.getvalue(), timeout=300)
+
+        return HttpResponse(img_byte_arr, content_type='image/png')
+        
     except Exception as e:
         print(e)
         return JsonResponse({"error": str(e)}, status=500)
+
+def get_book_content(request, book_id):
+    
+    book = get_object_or_404(Book,id=book_id)
+    
+    with open(book.pdf_file.path,'rb') as f:
+        reader = PdfReader(f)
+        return render(request,'read_book.html', {
+            "page_length" : len(reader.pages),
+            "book_id" : book_id
+        })
 
 def user_profile(request,username):
     user = get_object_or_404(User, username=username)

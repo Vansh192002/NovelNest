@@ -10,6 +10,7 @@ urlpatterns = [
     path("books/", views.get_books, name="books"),
     path("genres/", views.get_genres, name="genres"),
     path('get_book/<int:book_id>/', views.get_specific_book, name="get_book"),
-    path('get_book_content/<int:book_id>/page/<int:page_number>/', views.book_page, name="get_book_content"),
-    # path("genres/", views.genres, name="genres")
+    path("download_book/<int:book_id>", views.download_pdf,name="download_book"),
+    path('get_book_content/<int:book_id>', views.get_book_content, name="get_book_content"),
+    path('get_book_page/<int:book_id>/page/<int:page_number>/', views.get_book_page, name="get_book_page"),
 ]
