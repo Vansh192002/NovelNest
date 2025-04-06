@@ -45,7 +45,7 @@ function updatePageContent(bookId, pageNumber) {
             const imgElement = document.createElement("img");
             imgElement.src = imageURL;
             imgElement.alt = `Page  ${pageNumber + 1}`;
-            imgElement.classList.add('transition-opacity', 'duration-500', 'ease-in-out', 'object-cover', 'h-146', 'w-full');
+            imgElement.classList.add('transition-opacity', 'duration-500', 'ease-in-out', 'object-fit', 'h-146', 'w-full');
 
             const bookContent = document.getElementById("book-content");
             bookContent.innerHTML = '';

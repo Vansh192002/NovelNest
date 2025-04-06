@@ -14,6 +14,7 @@ from django.contrib.auth.decorators import login_required
 
 @login_required
 def home(request):
+    # print(request.user.id)
     colors = [c for c in range(200, 900, 100)]
     books = Book.objects.all().order_by('-added_date')[:6] 
     genres = Genre.objects.all()[:6]
@@ -132,6 +133,22 @@ def get_book_content(request, book_id):
             "page_length" : len(reader.pages),
             "book" : book
         })
+
+def collection(request):
+    
+    if request.method == "POST" :
+        book_id = request.POST.get('book_id')
+        book = get_object_or_404(Book,id=book_id)
+        collection = Collection.objects.create(
+            user = request.user,
+            book = book
+        )
+        collection.save()
+        return JsonResponse()
+    else:
+        return render(request, 'collection.html')
+
+    
 
 def user_profile(request,username):
     user = get_object_or_404(User, username=username)
