@@ -19,8 +19,10 @@ def post_save_post(sender, instance, created, **kwargs):
         pix = page.get_pixmap()
 
         image = Image.frombytes("RGB", [pix.width, pix.height], pix.samples)
+        image.thumbnail((300,400))
+        
         image_io = BytesIO()
-        image.save(image_io, format='JPEG')
+        image.save(image_io, format='JPEG', quality=85)
         image_io.seek(0)
 
         thumbnail_name = f'{os.path.splitext(os.path.basename(pdf_path))[0]}_thumbnail.jpg'

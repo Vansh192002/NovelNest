@@ -3,14 +3,16 @@ from .models import *
 from django.core.cache import cache
 from django.http import JsonResponse,FileResponse,HttpResponse
 from PyPDF2 import PdfReader
+from django.contrib import messages
 from django.contrib.auth.models import User
 import os, fitz
 from io import BytesIO
 from PIL import Image
 from NovelNest.settings import MEDIA_URL
-from django.contrib.auth import  login,logout
+from django.contrib.auth import  login,logout,authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
+from .forms import *
 
 @login_required
 def home(request):
@@ -32,44 +34,106 @@ def user_login(request):
         return redirect('home')
     
     if request.method == "POST":
-        form = AuthenticationForm(request, data=request.POST)
-        if form.is_valid():
-            user=form.get_user()
-            login(request,user)
+        
+        login_id = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        user = authenticate(request, username=login_id, password=password)
+        
+        if user is None:
+            try:
+                profile = UserProfile.objects.get(phone_number=login_id)
+                user = authenticate(request, username=profile.user.username, password=password)
+            except Exception as error:
+                user = None
+        
+        if user is not None:
+            login(request, user)
             return redirect('home')
         else:
-            return render(request, 'login.html', {'form': form, 'error': 'Invalid username or password'})
-    else:
-        form = AuthenticationForm()
-    return render(request, 'login.html', {'form': form})
+            return render(request, 'login.html', {
+                'form': AuthenticationForm(),
+                'error': 'Invalid credentials.'
+            })
+                
+        # form = AuthenticationForm(request, data=request.POST)
+        # if form.is_valid():
+        #     user=form.get_user()
+        #     login(request,user)
+        #     return redirect('home')
+        # else:
+        #     return render(request, 'login.html', {'form': form, 'error': 'Invalid username or password'})
+    return render(request, 'login.html', {'form': AuthenticationForm()})
 
 @login_required
 def user_logout(request):
     logout(request)
     return redirect('login')
 
+@login_required
+def update_user(request):
+    
+    user = request.user
+    profile = user.profile
+
+    if request.method == "POST":
+        user_form = UserUpdateForm(request.POST,instance=user)
+        profile_form = UserProfileForm(request.POST, request.FILES, instance=profile)
+
+        if user_form.is_valid() and profile_form.is_valid() :
+            user_form.save()
+            profile_form.save()
+            
+            messages.success(request,"Your Profile has been updated")
+            return redirect('update_user')
+        else :
+            messages.error(request, "Error in Updating Profile")
+            return redirect('update_user')
+    else :
+        user_form = UserUpdateForm(instance=user)
+        profile_form = UserProfileForm(instance=profile)
+    
+    return render(request, 'edit_profile.html',{
+        "user" : request.user,
+        "user_form" : user_form,
+        "profile_form" : profile_form
+    })
+
 def user_register(request):
     if request.user.is_authenticated:
         return redirect('home')
     if request.method == 'POST':
+        form = UserRegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            phone_number = form.cleaned_data["phone_number"]
+            profile_picture = form.cleaned_data.get("profile_picture")
+            UserProfile.objects.create(
+                user=user,
+                phone_number = phone_number,
+                profile_picture = profile_picture
+            )
+            
+        # username = request.POST.get('username')
+        # firstname = request.POST.get('firstname')
+        # lastname = request.POST.get('lastname')
+        # email = request.POST.get('email')
+        # password = request.POST.get('password')
         
-        username = request.POST.get('username')
-        firstname = request.POST.get('firstname')
-        lastname = request.POST.get('lastname')
-        email = request.POST.get('email')
-        password = request.POST.get('password')
+        # user_existing = User.objects.filter(username=username).first()
+        # if user_existing :
+        #     return JsonResponse({"error":"User already exists"}, status=500) 
         
-        user_existing = User.objects.filter(username=username).first()
-        if user_existing :
-            return JsonResponse({"error":"User already exists"}, status=500) 
+        # user = User.objects.create_user(username,email,password)
+        # user.first_name = firstname
+        # user.last_name = lastname
+        # user.save()
         
-        user = User.objects.create_user(username,email,password)
-        user.first_name = firstname
-        user.last_name = lastname
-        user.save()
-        
-        return redirect('login')
-    return render(request, 'register.html')
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+            
+    return render(request, 'register.html',{"form" : form})
 
 @login_required
 def get_books(request):
